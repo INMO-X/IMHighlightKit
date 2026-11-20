@@ -1,0 +1,253 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 6.4.2 effective-5.10 (swiftlang-6.4.2.1.9 clang-2100.4.1.1)
+// swift-module-flags: -target arm64-apple-ios15.0-simulator -enable-objc-interop -enable-library-evolution -language-mode 5 -O -enable-experimental-feature DebugDescriptionMacro -enable-bare-slash-regex -module-name IMHighlightKit
+// swift-module-flags-ignorable: -no-verify-emitted-module-interface -formal-cxx-interoperability-mode=off -interface-compiler-version 6.4.2
+import CoreGraphics
+import Foundation
+import IMBaseKit
+@_exported import IMHighlightKit
+import ImageIO
+import Moya
+import ObjectMapper
+import Swift
+import UniformTypeIdentifiers
+import _Concurrency
+import _StringProcessing
+import _SwiftConcurrencyShims
+public enum IMHighlightTaskKind : Swift::String, Swift::Codable, Swift::CaseIterable {
+  case comic
+  case collage
+  public init?(rawValue: Swift::String)
+  public typealias AllCases = [IMHighlightKit::IMHighlightTaskKind]
+  public typealias RawValue = Swift::String
+  nonisolated public static var allCases: [IMHighlightKit::IMHighlightTaskKind] {
+    get
+  }
+  public var rawValue: Swift::String {
+    get
+  }
+}
+public enum IMHighlightTaskStatus : Swift::Int, Swift::Codable {
+  case pending
+  case generating
+  case succeeded
+  case failed
+  public var isFinished: Swift::Bool {
+    get
+  }
+  public init?(rawValue: Swift::Int)
+  public typealias RawValue = Swift::Int
+  public var rawValue: Swift::Int {
+    get
+  }
+}
+public enum IMHighlightRegion : Swift::String, Swift::Codable {
+  case cn
+  case global
+  public init?(rawValue: Swift::String)
+  public typealias RawValue = Swift::String
+  public var rawValue: Swift::String {
+    get
+  }
+}
+public enum IMHighlightError : Swift::Error {
+  case noImages
+  case tooManyImages(max: Swift::Int)
+  case imageEncodeFailed
+  case unsupported
+  case request(message: Swift::String)
+  case server(code: Swift::Int, message: Swift::String)
+  public var isNetworkFailure: Swift::Bool {
+    get
+  }
+}
+@_hasMissingDesignatedInitializers final public class IMHighlightKit {
+  public static let shared: IMHighlightKit::IMHighlightKit
+  public static let tasksDidChangeNotification: Foundation::Notification.Foundation::Name
+  public static let collageAvailabilityDidChangeNotification: Foundation::Notification.Foundation::Name
+  public static let collageEnabledDefaultsKey: Swift::String
+  final public var userID: Swift::String {
+    get
+  }
+  final public func configure(userID: Swift::String)
+  final public func service(for kind: IMHighlightKit::IMHighlightTaskKind) -> any IMHighlightKit::IMHighlightTaskService
+  final public func store(for kind: IMHighlightKit::IMHighlightTaskKind) -> any IMHighlightKit::IMHighlightTaskStore
+  final public func resultImageStore(for kind: IMHighlightKit::IMHighlightTaskKind) -> IMHighlightKit::IMHighlightResultImageStore
+  final public func syncManager(for kind: IMHighlightKit::IMHighlightTaskKind) -> IMHighlightKit::IMHighlightSyncManager
+  final public var service: any IMHighlightKit::IMHighlightTaskService {
+    get
+  }
+  final public var store: any IMHighlightKit::IMHighlightTaskStore {
+    get
+  }
+  final public var resultImageStore: IMHighlightKit::IMHighlightResultImageStore {
+    get
+  }
+  final public var syncManager: IMHighlightKit::IMHighlightSyncManager {
+    get
+  }
+  final public func allLocalTasks() -> [IMHighlightKit::IMHighlightTask]
+  final public func allPendingTasks() -> [IMHighlightKit::IMHighlightTask]
+  final public func takeUnnotifiedFailures() -> [IMHighlightKit::IMHighlightTask]
+  final public var hasGeneratingTask: Swift::Bool {
+    get
+  }
+  final public var generatingTaskImageCount: Swift::Int? {
+    get
+  }
+  public static func pollInterval(forImageCount count: Swift::Int?) -> Foundation::TimeInterval
+  @discardableResult
+  final public func createTaskWithUpload(kind: IMHighlightKit::IMHighlightTaskKind, images: [Foundation::Data], region: IMHighlightKit::IMHighlightRegion?) -> Swift::Bool
+  final public var lastSyncHitNetworkError: Swift::Bool {
+    get
+  }
+  final public var isCollageFeatureEnabled: Swift::Bool {
+    get
+  }
+  final public func recordCollageEnabled(_ enabled: Swift::Bool)
+  final public func sync(includeConfig: Swift::Bool = true, completion: (() -> Swift::Void)? = nil)
+  final public func clearLocalData()
+  @objc deinit
+}
+final public class IMHighlightResultImageStore {
+  final public let userID: Swift::String
+  final public let kind: IMHighlightKit::IMHighlightTaskKind
+  public init(userID: Swift::String, kind: IMHighlightKit::IMHighlightTaskKind = .comic)
+  final public func localPath(taskId: Swift::Int64) -> Swift::String?
+  final public func downloadResult(from urlString: Swift::String, taskId: Swift::Int64, completion: @escaping (Swift::Result<Swift::String, IMHighlightKit::IMHighlightError>) -> Swift::Void)
+  final public func removeResult(taskId: Swift::Int64)
+  final public func clear()
+  @objc deinit
+}
+final public class IMHighlightSyncManager {
+  final public let kind: IMHighlightKit::IMHighlightTaskKind
+  final public var pendingTasks: [IMHighlightKit::IMHighlightTask] {
+    get
+  }
+  final public var collageConfig: IMHighlightKit::IMHighlightCollageConfig? {
+    get
+  }
+  final public var lastSyncError: IMHighlightKit::IMHighlightError? {
+    get
+  }
+  final public var generatingTaskImageCount: Swift::Int? {
+    get
+  }
+  final public var hasGeneratingTask: Swift::Bool {
+    get
+  }
+  public init(service: any IMHighlightKit::IMHighlightTaskService, store: any IMHighlightKit::IMHighlightTaskStore, resultStore: IMHighlightKit::IMHighlightResultImageStore)
+  final public func sync(includeConfig: Swift::Bool = true, completion: (() -> Swift::Void)? = nil)
+  final public func refreshConfig(completion: ((IMHighlightKit::IMHighlightCollageConfig?) -> Swift::Void)? = nil)
+  final public func localTasks() -> [IMHighlightKit::IMHighlightTask]
+  final public func deleteLocal(id: Swift::Int64)
+  final public func addPending(_ task: IMHighlightKit::IMHighlightTask)
+  final public func createTaskWithUpload(images: [Foundation::Data], region: IMHighlightKit::IMHighlightRegion?)
+  final public func takeUnnotifiedFailures() -> [IMHighlightKit::IMHighlightTask]
+  final public func removePending(id: Swift::Int64)
+  final public func updateSummary(id: Swift::Int64, title: Swift::String?, description: Swift::String?)
+  @objc deinit
+}
+public struct IMHighlightTask : Swift::Equatable, Swift::Codable {
+  public let kind: IMHighlightKit::IMHighlightTaskKind
+  public let taskId: Swift::Int64
+  public let status: IMHighlightKit::IMHighlightTaskStatus
+  public let region: Swift::String
+  public let imageCount: Swift::Int?
+  public let title: Swift::String?
+  public let description: Swift::String?
+  public let summaryStatus: Swift::Int
+  public let outputUrl: Swift::String?
+  public let errorMsg: Swift::String?
+  public let createdAt: Swift::String?
+  public let processedAt: Swift::String?
+  public let expiresAt: Swift::String?
+  public var localImagePath: Swift::String?
+  public init(kind: IMHighlightKit::IMHighlightTaskKind = .comic, taskId: Swift::Int64, status: IMHighlightKit::IMHighlightTaskStatus, region: Swift::String, imageCount: Swift::Int? = nil, title: Swift::String? = nil, description: Swift::String? = nil, summaryStatus: Swift::Int = 0, outputUrl: Swift::String?, errorMsg: Swift::String?, createdAt: Swift::String?, processedAt: Swift::String?, expiresAt: Swift::String?, localImagePath: Swift::String? = nil)
+  public init(from decoder: any Swift::Decoder) throws
+  public var uniqueKey: Swift::String {
+    get
+  }
+  public var isFinished: Swift::Bool {
+    get
+  }
+  public var isPendingPull: Swift::Bool {
+    get
+  }
+  public func withLocalImagePath(_ path: Swift::String?) -> IMHighlightKit::IMHighlightTask
+  public func withImageCount(_ count: Swift::Int?) -> IMHighlightKit::IMHighlightTask
+  public func withSummary(title: Swift::String?, description: Swift::String?) -> IMHighlightKit::IMHighlightTask
+  public func withSummary(title: Swift::String?, description: Swift::String?, summaryStatus: Swift::Int) -> IMHighlightKit::IMHighlightTask
+  public static func == (a: IMHighlightKit::IMHighlightTask, b: IMHighlightKit::IMHighlightTask) -> Swift::Bool
+  public func encode(to encoder: any Swift::Encoder) throws
+}
+public struct IMHighlightCollageConfig : Swift::Equatable, Swift::Codable {
+  public let enabled: Swift::Bool
+  public let imageCounts: [Swift::Int]
+  public init(enabled: Swift::Bool, imageCounts: [Swift::Int])
+  public var sortedImageCounts: [Swift::Int] {
+    get
+  }
+  public func imageCounts(upTo limit: Swift::Int) -> [Swift::Int]
+  public static func == (a: IMHighlightKit::IMHighlightCollageConfig, b: IMHighlightKit::IMHighlightCollageConfig) -> Swift::Bool
+  public func encode(to encoder: any Swift::Encoder) throws
+  public init(from decoder: any Swift::Decoder) throws
+}
+@_hasMissingDesignatedInitializers final public class IMHighlightPollHandle {
+  final public func cancel()
+  @objc deinit
+}
+public protocol IMHighlightTaskService : AnyObject {
+  var kind: IMHighlightKit::IMHighlightTaskKind { get }
+  var maxImageCount: Swift::Int { get }
+  func fetchConfig(completion: @escaping (Swift::Result<IMHighlightKit::IMHighlightCollageConfig, IMHighlightKit::IMHighlightError>) -> Swift::Void)
+  func fetchTasks(page: Swift::Int, size: Swift::Int, excludeConsumed: Swift::Bool, completion: @escaping (Swift::Result<(tasks: [IMHighlightKit::IMHighlightTask], total: Swift::Int64), IMHighlightKit::IMHighlightError>) -> Swift::Void)
+  func consumeTask(id: Swift::Int64, completion: @escaping (Swift::Result<Swift::Void, IMHighlightKit::IMHighlightError>) -> Swift::Void)
+  func deleteTask(id: Swift::Int64, completion: @escaping (Swift::Result<Swift::Void, IMHighlightKit::IMHighlightError>) -> Swift::Void)
+  func createTask(images: [Foundation::Data], region: IMHighlightKit::IMHighlightRegion?, completion: @escaping (Swift::Result<IMHighlightKit::IMHighlightTask, IMHighlightKit::IMHighlightError>) -> Swift::Void)
+  func fetchTaskDetail(id: Swift::Int64, completion: @escaping (Swift::Result<IMHighlightKit::IMHighlightTask, IMHighlightKit::IMHighlightError>) -> Swift::Void)
+  @discardableResult
+  func pollTask(id: Swift::Int64, interval: Foundation::TimeInterval, onUpdate: @escaping (IMHighlightKit::IMHighlightTask) -> Swift::Void, onFinish: @escaping (Swift::Result<IMHighlightKit::IMHighlightTask, IMHighlightKit::IMHighlightError>) -> Swift::Void) -> IMHighlightKit::IMHighlightPollHandle
+}
+extension IMHighlightKit::IMHighlightTaskService {
+  public func fetchTasks(completion: @escaping (Swift::Result<(tasks: [IMHighlightKit::IMHighlightTask], total: Swift::Int64), IMHighlightKit::IMHighlightError>) -> Swift::Void)
+  @discardableResult
+  public func pollTask(id: Swift::Int64, onUpdate: @escaping (IMHighlightKit::IMHighlightTask) -> Swift::Void, onFinish: @escaping (Swift::Result<IMHighlightKit::IMHighlightTask, IMHighlightKit::IMHighlightError>) -> Swift::Void) -> IMHighlightKit::IMHighlightPollHandle
+}
+final public class IMHighlightTaskNetworkService : IMHighlightKit::IMHighlightTaskService {
+  public static func defaultMaxImageCount(for kind: IMHighlightKit::IMHighlightTaskKind) -> Swift::Int
+  final public let kind: IMHighlightKit::IMHighlightTaskKind
+  final public let maxImageCount: Swift::Int
+  public init(kind: IMHighlightKit::IMHighlightTaskKind = .comic, maxImageCount: Swift::Int? = nil)
+  final public func fetchConfig(completion: @escaping (Swift::Result<IMHighlightKit::IMHighlightCollageConfig, IMHighlightKit::IMHighlightError>) -> Swift::Void)
+  final public func fetchTasks(page: Swift::Int, size: Swift::Int, excludeConsumed: Swift::Bool, completion: @escaping (Swift::Result<(tasks: [IMHighlightKit::IMHighlightTask], total: Swift::Int64), IMHighlightKit::IMHighlightError>) -> Swift::Void)
+  final public func createTask(images: [Foundation::Data], region: IMHighlightKit::IMHighlightRegion?, completion: @escaping (Swift::Result<IMHighlightKit::IMHighlightTask, IMHighlightKit::IMHighlightError>) -> Swift::Void)
+  final public func fetchTaskDetail(id: Swift::Int64, completion: @escaping (Swift::Result<IMHighlightKit::IMHighlightTask, IMHighlightKit::IMHighlightError>) -> Swift::Void)
+  final public func consumeTask(id: Swift::Int64, completion: @escaping (Swift::Result<Swift::Void, IMHighlightKit::IMHighlightError>) -> Swift::Void)
+  final public func deleteTask(id: Swift::Int64, completion: @escaping (Swift::Result<Swift::Void, IMHighlightKit::IMHighlightError>) -> Swift::Void)
+  final public func pollTask(id: Swift::Int64, interval: Foundation::TimeInterval, onUpdate: @escaping (IMHighlightKit::IMHighlightTask) -> Swift::Void, onFinish: @escaping (Swift::Result<IMHighlightKit::IMHighlightTask, IMHighlightKit::IMHighlightError>) -> Swift::Void) -> IMHighlightKit::IMHighlightPollHandle
+  @objc deinit
+}
+public protocol IMHighlightTaskStore : AnyObject {
+  func tasks() -> [IMHighlightKit::IMHighlightTask]
+  func save(_ tasks: [IMHighlightKit::IMHighlightTask])
+  func clear()
+}
+final public class IMHighlightUserDefaultsTaskStore : IMHighlightKit::IMHighlightTaskStore {
+  final public let userID: Swift::String
+  final public let kind: IMHighlightKit::IMHighlightTaskKind
+  public init(userID: Swift::String, kind: IMHighlightKit::IMHighlightTaskKind = .comic, defaults: Foundation::UserDefaults = .standard)
+  final public func tasks() -> [IMHighlightKit::IMHighlightTask]
+  final public func save(_ tasks: [IMHighlightKit::IMHighlightTask])
+  final public func clear()
+  @objc deinit
+}
+extension IMHighlightKit::IMHighlightTaskKind : Swift::Equatable {}
+extension IMHighlightKit::IMHighlightTaskKind : Swift::Hashable {}
+extension IMHighlightKit::IMHighlightTaskKind : Swift::RawRepresentable {}
+extension IMHighlightKit::IMHighlightTaskStatus : Swift::Equatable {}
+extension IMHighlightKit::IMHighlightTaskStatus : Swift::Hashable {}
+extension IMHighlightKit::IMHighlightTaskStatus : Swift::RawRepresentable {}
+extension IMHighlightKit::IMHighlightRegion : Swift::Equatable {}
+extension IMHighlightKit::IMHighlightRegion : Swift::Hashable {}
+extension IMHighlightKit::IMHighlightRegion : Swift::RawRepresentable {}

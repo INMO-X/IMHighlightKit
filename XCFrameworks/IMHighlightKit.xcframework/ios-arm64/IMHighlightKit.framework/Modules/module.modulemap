@@ -1,0 +1,10 @@
+framework module IMHighlightKit {
+  umbrella header "IMHighlightKit.h"
+  export *
+
+  module * { export * }
+}
+
+module IMHighlightKit.Swift {
+  header "IMHighlightKit-Swift.h"
+}
