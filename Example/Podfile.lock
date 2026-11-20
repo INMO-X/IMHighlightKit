@@ -1,0 +1,77 @@
+PODS:
+  - Alamofire (5.12.2)
+  - CocoaLumberjack/Core (3.9.1)
+  - CocoaLumberjack/Swift (3.9.1):
+    - CocoaLumberjack/Core
+  - Connectivity (8.0.1)
+  - CryptoSwift (1.10.0)
+  - IMBaseKit (0.1.2):
+    - CocoaLumberjack/Swift (= 3.9.1)
+    - Connectivity (= 8.0.1)
+    - CryptoSwift (= 1.10.0)
+    - Kingfisher (= 8.12.0)
+    - MMKV (= 2.4.2)
+    - Moya (= 15.0.0)
+    - ObjectMapper (= 4.4.2)
+  - IMHighlightKit (0.1.2):
+    - IMBaseKit (= 0.1.2)
+    - Moya (= 15.0.0)
+    - ObjectMapper (= 4.4.2)
+  - Kingfisher (8.12.0)
+  - MMKV (2.4.2):
+    - MMKVCore (~> 2.4.2)
+  - MMKVCore (2.4.3)
+  - Moya (15.0.0):
+    - Moya/Core (= 15.0.0)
+  - Moya/Core (15.0.0):
+    - Alamofire (~> 5.0)
+  - ObjectMapper (4.4.2)
+
+DEPENDENCIES:
+  - IMBaseKit (from `https://github.com/INMO-X/IMBaseKit.git`, tag `0.1.2`)
+  - IMHighlightKit (from `https://github.com/INMO-X/IMHighlightKit.git`, tag `0.1.2`)
+
+SPEC REPOS:
+  trunk:
+    - Alamofire
+    - CocoaLumberjack
+    - Connectivity
+    - CryptoSwift
+    - Kingfisher
+    - MMKV
+    - MMKVCore
+    - Moya
+    - ObjectMapper
+
+EXTERNAL SOURCES:
+  IMBaseKit:
+    :git: https://github.com/INMO-X/IMBaseKit.git
+    :tag: 0.1.2
+  IMHighlightKit:
+    :git: https://github.com/INMO-X/IMHighlightKit.git
+    :tag: 0.1.2
+
+CHECKOUT OPTIONS:
+  IMBaseKit:
+    :git: https://github.com/INMO-X/IMBaseKit.git
+    :tag: 0.1.2
+  IMHighlightKit:
+    :git: https://github.com/INMO-X/IMHighlightKit.git
+    :tag: 0.1.2
+
+SPEC CHECKSUMS:
+  Alamofire: c5f37d8f438dc1d7fd3ff767f2f80fd01ca381d7
+  CocoaLumberjack: e4ba3b414dfca8c1916c6303d37f63b3a95134c6
+  Connectivity: f9e562568f32d7a297412d939edac9f3959db96f
+  CryptoSwift: e2e7776512f250e66205955da748e7a4e4abffe0
+  IMBaseKit: ecbdbe48fb3f5d0dce7900ad0466c9376ee03b04
+  IMHighlightKit: 6c6bca2bfc3f5ca50dcb2c370b0a940041861da7
+  Kingfisher: 64e06c7d1a9851ecff9d1b14f92ad01141263dae
+  MMKV: d37bccee64404d7c3e1457fabd9368e78d69a80f
+  MMKVCore: 065b61d4f942d3b6e1c913c378c120934f315ee4
+  Moya: 138f0573e53411fb3dc17016add0b748dfbd78ee
+  ObjectMapper: e6e4d91ff7f2861df7aecc536c92d8363f4c9677
+
+PODFILE CHECKSUM: cc30955955f2074b987baf9207f9b50d4bd3dc33
+
+COCOAPODS: 1.16.2
